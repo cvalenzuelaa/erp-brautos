@@ -145,4 +145,10 @@ class VehiculoController extends Controller
     {
         return view('vehiculos.show', compact('vehiculo'));
     }
+
+    public function edit(Vehiculo $vehiculo)
+    {
+        $marcas = Marca::all();
+        return view('vehiculos.edit', compact('vehiculo', 'marcas'));
+    }
 }

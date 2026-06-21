@@ -26,11 +26,11 @@
         <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm hover:shadow-md transition group">
             <div class="flex items-center gap-4">
                 <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"/></svg>
+                    <i class="fa-solid fa-car text-xl"></i>
                 </div>
                 <div>
                     <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-0.5">Stock Total</p>
-                    <h3 class="text-2xl font-black text-[#1a2b4c]">28</h3>
+                    <h3 class="text-2xl font-black text-[#1a2b4c]">{{ $total_vehiculos }}</h3>
                 </div>
             </div>
         </div>
@@ -39,11 +39,11 @@
         <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm hover:shadow-md transition group">
             <div class="flex items-center gap-4">
                 <div class="w-12 h-12 rounded-xl bg-green-50 text-emerald-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+                    <i class="fa-solid fa-globe text-xl"></i>
                 </div>
                 <div>
                     <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-0.5">En Vitrina Web</p>
-                    <h3 class="text-2xl font-black text-[#1a2b4c]">24</h3>
+                    <h3 class="text-2xl font-black text-[#1a2b4c]">{{ $publicados }}</h3>
                 </div>
             </div>
         </div>
@@ -52,11 +52,11 @@
         <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm hover:shadow-md transition group">
             <div class="flex items-center gap-4">
                 <div class="w-12 h-12 rounded-xl bg-orange-50 text-[#eb5e10] flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <i class="fa-solid fa-sack-dollar text-xl"></i>
                 </div>
                 <div>
                     <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-0.5">Valor Inventario</p>
-                    <h3 class="text-2xl font-black text-[#1a2b4c] truncate w-32">$435.2M</h3>
+                    <h3 class="text-2xl font-black text-[#1a2b4c] truncate w-32">{{ $valor_inventario }}</h3>
                 </div>
             </div>
         </div>
