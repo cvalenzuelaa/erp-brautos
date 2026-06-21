@@ -2,41 +2,39 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VehiculoController;
-use App\Models\Vehiculo;
 use Illuminate\Support\Facades\Route;
 
-// Ruta principal (puedes cambiarla para que redirija al login o dashboard)
 Route::get('/', function () {
     return view('welcome');
 });
 
-// Dashboard con cálculos reales
 Route::get('/dashboard', function () {
-    $total_vehiculos = Vehiculo::count();
-    $publicados = Vehiculo::where('estado_publicacion', 'Publicado')->count();
-    $valor_bruto = Vehiculo::sum('precio_venta');
-    
-    if ($valor_bruto >= 1000000) {
-        $valor_inventario = '$' . number_format($valor_bruto / 1000000, 1, ',', '.') . 'M';
-    } else {
-        $valor_inventario = '$' . number_format($valor_bruto, 0, ',', '.');
-    }
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
 
-    return view('dashboard', compact('total_vehiculos', 'publicados', 'valor_inventario'));
-})->middleware(['auth', 'verified'])->name('dashboard');
+// ✅ Solo UNA definición del resource, con los middlewares correctos
+Route::middleware(['auth', 'role:super_admin,admin'])->group(function () {
+    Route::resource('vehiculos', VehiculoController::class);
+});
 
+Route::middleware(['auth', 'role:super_admin'])->group(function () {
+    Route::get('/usuarios', function () {
+        return view('usuarios.index');
+    })->name('usuarios.index');
+});
 
-// Grupo de rutas que requieren que el usuario haya iniciado sesión
 Route::middleware('auth')->group(function () {
-    
-    // Rutas del Perfil
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    
-    // Rutas del Inventario de Vehículos
-    Route::resource('vehiculos', VehiculoController::class);
-    
 });
+
+Route::get('/vitrina', function () {
+    return view('vitrina');
+})->name('vitrina');
+
+Route::post('/vehiculos/{vehiculo}/publicar', [VehiculoController::class, 'publicar'])
+    ->name('vehiculos.publicar')
+    ->middleware(['auth', 'can:publicar_redes']);
 
 require __DIR__.'/auth.php';

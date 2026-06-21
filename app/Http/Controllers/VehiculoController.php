@@ -15,7 +15,8 @@ class VehiculoController extends Controller
 
     public function index()
     {
-        $vehiculos = Vehiculo::with(['modelo.marca'])->get();
+        // Usamos paginate() en lugar de get()
+        $vehiculos = Vehiculo::with(['modelo.marca'])->paginate(10);
         return view('vehiculos.index', compact('vehiculos'));
     }
 
@@ -146,9 +147,4 @@ class VehiculoController extends Controller
         return view('vehiculos.show', compact('vehiculo'));
     }
 
-    public function edit(Vehiculo $vehiculo)
-    {
-        $marcas = Marca::all();
-        return view('vehiculos.edit', compact('vehiculo', 'marcas'));
-    }
 }
