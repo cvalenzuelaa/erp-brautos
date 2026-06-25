@@ -40,6 +40,11 @@
                     <span class="font-bold text-sm">Inventario</span>
                 </a>
 
+                <a href="{{ route('marcas.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl transition whitespace-nowrap {{ request()->routeIs('marcas.*') || request()->routeIs('modelos.*') ? 'bg-[#2a3b5c] text-white shadow-sm border border-white/5' : 'text-gray-300 hover:text-white hover:bg-white/5' }}">
+                    <i class="fa-solid fa-tags w-5 text-center {{ request()->routeIs('marcas.*') || request()->routeIs('modelos.*') ? 'text-[#eb5e10]' : 'opacity-70' }}"></i>
+                    <span class="font-bold text-sm">Marcas y Modelos</span>
+                </a>
+
                 <a href="{{ route('vitrina') }}" target="_blank" class="flex items-center gap-3 px-4 py-3 rounded-xl transition whitespace-nowrap text-gray-300 hover:text-white hover:bg-white/5">
                     <i class="fa-solid fa-globe w-5 text-center opacity-70"></i>
                     <span class="font-bold text-sm">Vitrina Web</span>
@@ -93,6 +98,16 @@
 
             {{-- Contenido inyectado por las vistas --}}
             <div class="flex-1 overflow-y-auto">
+                @if(session('success'))
+                    <div class="bg-green-50 border border-green-200 text-green-800 px-6 py-3 text-sm font-medium">
+    {{ session('success') }}
+                    </div>
+                @endif
+                @if(session('error'))
+                    <div class="bg-red-50 border border-red-200 text-red-800 px-6 py-3 text-sm font-medium">
+                        {{ session('error') }}
+                    </div>
+                @endif
                 @yield('content')
             </div>
         </main>

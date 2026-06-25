@@ -9,6 +9,9 @@ class Marca extends Model
 {
     protected $table = 'marcas';
     
+    // ¡Esta es la línea clave que debes agregar!
+    public $timestamps = false;
+    
     protected $fillable = ['nombre'];
 
     public function modelos(): HasMany

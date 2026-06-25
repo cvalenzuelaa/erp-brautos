@@ -224,6 +224,93 @@
                 <div id="extras-custom-list" class="mt-3 flex flex-wrap gap-2"></div>
             </div>
 
+            {{-- ============================================================ --}}
+            {{-- SECCIÓN FINANCIAMIENTO                                        --}}
+            {{-- Pegar esta sección en create.blade.php y edit.blade.php      --}}
+            {{-- Antes de la sección "ESTADO + IMÁGENES"                      --}}
+            {{-- ============================================================ --}}
+
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-5">
+                <div class="border-b border-gray-100 pb-3 flex items-center justify-between">
+                    <h2 class="text-sm font-bold uppercase tracking-wider text-gray-400">Financiamiento</h2>
+                        <label class="flex items-center gap-2 cursor-pointer select-none">
+                            <span class="text-xs font-bold text-gray-500">Acepta financiamiento</span>
+                        <div class="relative">
+                            <input type="checkbox" name="acepta_financiamiento" id="toggle-financiamiento" value="1"
+                                {{ old('acepta_financiamiento', $vehiculo->acepta_financiamiento ?? 1) ? 'checked' : '' }}
+                                class="sr-only peer"
+                                onchange="document.getElementById('bloque-financiamiento').classList.toggle('hidden', !this.checked)">
+                        <div class="w-10 h-6 bg-gray-200 peer-checked:bg-[#eb5e10] rounded-full transition"></div>
+                <div class="absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition peer-checked:translate-x-4 shadow"></div>
+            </div>
+        </label>
+    </div>
+
+    {{-- Bloque visible solo si acepta financiamiento --}}
+    <div id="bloque-financiamiento" class="{{ old('acepta_financiamiento', $vehiculo->acepta_financiamiento ?? 1) ? '' : 'hidden' }} space-y-5">
+
+        {{-- Entidades financieras --}}
+        <div>
+            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
+                Entidades Financieras
+            </label>
+            <p class="text-xs text-gray-400 mb-3">Selecciona las entidades con las que se puede financiar este vehículo.</p>
+            @php
+                $entidadesDisponibles = ['Autofin', 'Global', 'Unidad'];
+                $entidadesSeleccionadas = old('entidades',
+                    isset($vehiculo) && $vehiculo->entidades_financieras
+                        ? explode(', ', $vehiculo->entidades_financieras)
+                        : []
+                );
+            @endphp
+            <div class="flex flex-wrap gap-3">
+                @foreach($entidadesDisponibles as $entidad)
+                <label class="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" name="entidades[]" value="{{ $entidad }}"
+                            {{ in_array($entidad, $entidadesSeleccionadas) ? 'checked' : '' }}
+                            class="w-4 h-4 rounded text-[#eb5e10] focus:ring-[#eb5e10] border-gray-300">
+                    <span class="text-sm font-semibold text-gray-700">{{ $entidad }}</span>
+                </label>
+                @endforeach
+            </div>
+        </div>
+
+        {{-- Condiciones de financiamiento --}}
+        <div>
+            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
+                Condiciones de Financiamiento
+            </label>
+            <p class="text-xs text-gray-400 mb-2">
+                Escribe una condición por línea. Formato sugerido: <span class="font-mono bg-gray-100 px-1 rounded">Pie 20%: $3.000.000.- (Acreditando renta)</span>
+            </p>
+            <textarea name="condiciones_financiamiento" rows="4"
+                        placeholder="Pie 20%: $3.478.000.- (Acreditando renta)&#10;Pie 35%: $6.086.500.- Instantáneo solo con el Rut (Sujeto a evaluación)"
+                        class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm font-medium focus:outline-none focus:ring-4 focus:ring-orange-500/10 focus:border-[#eb5e10] focus:bg-white transition resize-none font-mono">{{ old('condiciones_financiamiento', $vehiculo->condiciones_financiamiento ?? '') }}</textarea>
+            <p class="text-xs text-gray-400 mt-1.5">
+                <i class="fa-solid fa-circle-info text-blue-400"></i>
+                Cada línea se mostrará como una opción separada en la vitrina web.
+            </p>
+        </div>
+
+    </div>
+
+    {{-- Mensaje cuando no acepta financiamiento --}}
+    <div id="bloque-solo-contado" class="{{ old('acepta_financiamiento', $vehiculo->acepta_financiamiento ?? 1) ? 'hidden' : '' }}">
+        <div class="flex items-center gap-3 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3">
+            <i class="fa-solid fa-ban text-gray-400"></i>
+            <p class="text-sm text-gray-500 font-medium">Este vehículo se vende solo al contado.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+// Sincronizar visibilidad del bloque con el toggle
+document.getElementById('toggle-financiamiento').addEventListener('change', function() {
+    document.getElementById('bloque-financiamiento').classList.toggle('hidden', !this.checked);
+    document.getElementById('bloque-solo-contado').classList.toggle('hidden', this.checked);
+});
+</script>
+
             {{-- SECCIÓN 3: ESTADO + IMÁGENES (Dos columnas de tarjetas) --}}
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 
@@ -236,13 +323,18 @@
                         
                         <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2.5">Flujo de Publicación</label>
                         <div class="grid grid-cols-3 gap-2">
-                            @foreach(['Preparación' => '🔧 En Prep.', 'Publicado' => '✅ Publicar', 'Vendido' => '🏷️ Vendido'] as $value => $label)
+                            @foreach([
+                                'Preparación' => ['icon' => 'fa-wrench',       'label' => 'En Prep.'],
+                                'Publicado'   => ['icon' => 'fa-circle-check', 'label' => 'Publicar'],
+                                'Vendido'     => ['icon' => 'fa-tag',          'label' => 'Vendido'],
+                            ] as $value => $item)
                             <label class="cursor-pointer">
                                 <input type="radio" name="estado_publicacion" value="{{ $value }}"
                                        {{ old('estado_publicacion','Preparación') == $value ? 'checked' : '' }}
                                        class="peer hidden">
-                                <span class="block text-center text-xs sm:text-sm font-bold py-3 border border-gray-100 rounded-xl bg-gray-50/50 text-gray-600 peer-checked:border-orange-500 peer-checked:bg-orange-50/40 peer-checked:text-[#eb5e10] transition duration-200">
-                                    {{ $label }}
+                                <span class="flex flex-col items-center justify-center gap-1.5 text-xs sm:text-sm font-bold py-3 border border-gray-100 rounded-xl bg-gray-50/50 text-gray-600 peer-checked:border-orange-500 peer-checked:bg-orange-50/40 peer-checked:text-[#eb5e10] transition duration-200">
+                                    <i class="fa-solid {{ $item['icon'] }} text-base"></i>
+                                    {{ $item['label'] }}
                                 </span>
                             </label>
                             @endforeach
@@ -377,7 +469,7 @@ document.getElementById('marca_id').addEventListener('change', function() {
             });
         })
         .catch(() => {
-            modeloSelect.innerHTML = '<option value="">⚠️ Error al cargar los modelos</option>';
+            modeloSelect.innerHTML = '<option value="">Error al cargar los modelos</option>';
         });
 });
 

@@ -30,7 +30,7 @@
                 </div>
                 <div>
                     <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-0.5">Stock Total</p>
-                    <h3 class="text-2xl font-black text-[#1a2b4c]">28</h3>
+                    <h3 class="text-2xl font-black text-[#1a2b4c]">{{ $totalVehiculos }}</h3>
                 </div>
             </div>
         </div>
@@ -43,7 +43,7 @@
                 </div>
                 <div>
                     <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-0.5">En Vitrina Web</p>
-                    <h3 class="text-2xl font-black text-[#1a2b4c]">24</h3>
+                    <h3 class="text-2xl font-black text-[#1a2b4c]">{{ $publicados }}</h3>
                 </div>
             </div>
         </div>
@@ -56,7 +56,7 @@
                 </div>
                 <div>
                     <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-0.5">Valor Inventario</p>
-                    <h3 class="text-2xl font-black text-[#1a2b4c] truncate w-32">$435.2M</h3>
+                    <h3 class="text-2xl font-black text-[#1a2b4c] truncate w-32">{{ $valorInventario }}</h3>
                 </div>
             </div>
         </div>

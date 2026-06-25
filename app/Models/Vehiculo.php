@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Vehiculo extends Model
 {
+    use SoftDeletes;
     protected $table = 'vehiculos';
     
     protected $fillable = [
@@ -15,12 +17,12 @@ class Vehiculo extends Model
         'combustible', 'traccion', 'categoria', 'condicion', 'color',
         'equipamiento', 'precio_venta', 'acepta_financiamiento',
         'entidades_financieras', 'condiciones_financiamiento',
-        'estado_publicacion', 'consignado', 'usuario_id'
+        'estado_publicacion', 'consignado', 'usuario_id',
+        'venc_revision_tecnica', 'venc_permiso_circulacion',
     ];
 
     protected $casts = [
         'equipamiento' => 'array',
-        // ✅ Removido 'decimal:2' — causa conflictos al crear
     ];
 
     public function modelo(): BelongsTo
